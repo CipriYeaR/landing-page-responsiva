@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pedido Especial 💜</title>
+  <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #6a1b9a;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #caixa {
+      background-color: #8e24aa;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .botoes {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      background-color: white;
+      color: #6a1b9a;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    button:hover {
+      background-color: #f3e5f5;
+    }
+
+    #mensagem {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.1em;
+      min-height: 1.2em;
+    }
+
+    #qr-container {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(45deg);
+      animation: flutuar 5s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes flutuar {
+      0% {
+        top: 100vh;
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        top: -10%;
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="caixa">
+    <h1>MINHA PRINCESA DA FRANJA CAMALEÃO<br>ACEITA NAMORAR COMIGO?</h1>
+    <div class="botoes">
+      <button onclick="respostaSim()">Sim 💍</button>
+      <button id="nao" onmouseover="errou(this)">Não 💔</button>
+    </div>
+    <div id="mensagem"></div>
+    <div id="qr-container"></div>
+  </div>
+
+  <audio id="musica">
+    <source src="mc-poze.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    function respostaSim() {
+      const musica = document.getElementById("musica");
+      musica.play();
+      musica.loop = true;
+
+      alert("Ótima escolha, você é muito sabuda! 💜");
+
+      const qrDiv = document.getElementById("qr-container");
+      qrDiv.innerHTML = "";
+      new QRCode(qrDiv, {
+        text: "https://drive.google.com/file/d/1fmZKEkb7-wDj3PfXTvzfrhghweMRAiou/view?usp=drive_link",
+        width: 180,
+        height: 180,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    function errou(botao) {
+      const body = document.body;
+      const largura = body.clientWidth - botao.offsetWidth;
+      const altura = body.clientHeight - botao.offsetHeight;
+
+      const novaEsquerda = Math.random() * largura;
+      const novoTopo = Math.random() * altura;
+
+      botao.style.position = 'absolute';
+      botao.style.left = novaEsquerda + 'px';
+      botao.style.top = novoTopo + 'px';
+
+      document.getElementById("mensagem").textContent = "Blinded... Miss!";
+    }
+
+    // Corações animados
+    function criarCoracao() {
+      const coracao = document.createElement("div");
+      coracao.classList.add("heart");
+      coracao.style.left = Math.random() * 100 + "vw";
+      coracao.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      document.body.appendChild(coracao);
+
+      setTimeout(() => {
+        coracao.remove();
+      }, 5000);
+    }
+
+    setInterval(criarCoracao, 300);
+  </script>
+
+</body>
+</html>
